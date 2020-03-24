@@ -40,7 +40,7 @@
             </MenuItem>
 
             <MenuItem Header="Help" VerticalAlignment="Center">
-                <MenuItem Header="About" Icon="ⓘ"/>
+                <MenuItem Header="About" Icon="ⓘ" Click="AboutClick"/>
             </MenuItem>
         </Menu>
     </Grid>

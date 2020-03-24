@@ -49,5 +49,10 @@ namespace Calculator
         {
             Close();
         }
+        private void AboutClick(object sender, RoutedEventArgs e)
+        {
+            AboutWindow window = new AboutWindow();
+            window.Show();
+        }
     }
 }
