@@ -12,6 +12,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid Height ="30" Grid.Row="0" Background="DarkGray">
@@ -26,5 +27,21 @@
                 <Button x:Name="ExitButton" Content="✖" VerticalContentAlignment="Center" Width="50" Click="ExitButtonClick"/>
             </StackPanel>
         </Grid>
+
+        <Menu Grid.Row="1" Height="20" FontSize="13">
+            <MenuItem Header="Edit" VerticalAlignment="Center">
+                <MenuItem Header="Cut" Icon="✂️" FontSize="13"/>
+                <MenuItem Header="Copy" Icon="📄" FontSize="13"/>
+                <MenuItem Header="Paste" Icon="📋" FontSize="13"/>
+            </MenuItem>
+
+            <MenuItem Header="View" VerticalAlignment="Center">
+                <MenuItem Header="Digit Grouping" Icon="⊙" FontSize="13"/>
+            </MenuItem>
+
+            <MenuItem Header="Help" VerticalAlignment="Center">
+                <MenuItem Header="About" Icon="ⓘ"/>
+            </MenuItem>
+        </Menu>
     </Grid>
 </Window>
