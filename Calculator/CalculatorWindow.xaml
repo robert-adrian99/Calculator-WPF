@@ -5,8 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calculator"
         mc:Ignorable="d"
-        Title="Calculator">
+        Title="Calculator" ResizeMode="CanMinimize" 
+        Width="400" Height="695"
+        WindowStartupLocation="CenterScreen" WindowStyle="None"
+        MouseDown="WindowMouseDown" Icon="Resources\Calculator.ico">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Height ="30" Grid.Row="0" Background="DarkGray">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Image Source="Resources/Calculator.ico" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Visible" Margin="5"/>
+                <TextBlock Text="Calculator" VerticalAlignment="Center" FontSize="15" Foreground="Black" Margin="5"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Width="150">
+                <Button x:Name="MinimizeButton" Content="—" VerticalContentAlignment="Center" FontSize="15" Click="MinimizeButtonClick" Width="50"/>
+                <Button x:Name="MaximizeButton" Content="🗖" VerticalContentAlignment="Center" FontSize="15" Width="50" IsEnabled="False"/>
+                <Button x:Name="ExitButton" Content="✖" VerticalContentAlignment="Center" Width="50" Click="ExitButtonClick"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
