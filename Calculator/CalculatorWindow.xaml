@@ -8,7 +8,7 @@
         Title="Calculator" ResizeMode="CanMinimize" 
         Width="320" Height="695"
         WindowStartupLocation="CenterScreen" WindowStyle="None"
-        MouseDown="WindowMouseDown" Icon="Resources\Calculator.ico">
+        Icon="Resources\Calculator.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -16,7 +16,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Height ="30" Grid.Row="0" Background="DarkGray">
+        <Grid Height ="30" Grid.Row="0" Background="DarkGray" MouseDown="WindowMouseDown">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Image Source="Resources/Calculator.ico" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Visible" Margin="5"/>
                 <TextBlock Text="Calculator" VerticalAlignment="Center" FontSize="15" Foreground="Black" Margin="5"/>
@@ -31,9 +31,9 @@
 
         <Menu Grid.Row="1" Height="20" FontSize="13">
             <MenuItem Header="Edit" VerticalAlignment="Center">
-                <MenuItem Header="Cut" Icon="✂️" FontSize="13"/>
-                <MenuItem Header="Copy" Icon="📄" FontSize="13"/>
-                <MenuItem Header="Paste" Icon="📋" FontSize="13"/>
+                <MenuItem Header="Cut" Icon="✂️" FontSize="13" Click="CutClick"/>
+                <MenuItem Header="Copy" Icon="📄" FontSize="13" Click="CopyClick"/>
+                <MenuItem Header="Paste" Icon="📋" FontSize="13" Click="PasteClick"/>
             </MenuItem>
 
             <MenuItem Header="View" VerticalAlignment="Center">
@@ -46,7 +46,7 @@
         </Menu>
 
         <StackPanel Grid.Row="2" >
-            <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="100" IsEnabled="False" FontSize="50">
+            <TextBox x:Name="displayTextBox" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Height="100" IsReadOnly="True" FontSize="50">
                 0
             </TextBox>
 
@@ -63,63 +63,63 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="percentageButton" Content="%" Width="80" Height="80" FontSize="20" Background="Gray"/>
+                <Button x:Name="percentageButton" Content="%" Width="80" Height="80" FontSize="20" Background="Gray" Click="OperatorButtonClick"/>
 
-                <Button x:Name="CEButton" Content="CE" Width="80" FontSize="20" Background="Gray"/>
+                <Button x:Name="CEButton" Content="CE" Width="80" FontSize="20" Background="Gray" Click="CEButtonClick"/>
 
-                <Button x:Name="CButton" Content="C" Width="80" FontSize="20" Background="Gray"/>
+                <Button x:Name="CButton" Content="C" Width="80" FontSize="20" Background="Gray" Click="CButtonClick"/>
 
-                <Button x:Name="DeleteButton" Content="⌦" Width="80" FontSize="20" Background="Gray"/>
+                <Button x:Name="DeleteButton" Content="⌦" Width="80" FontSize="20" Background="Gray" Click="DeleteButtonClick"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="inverseButton" Content="1/x" Width="80" Height="80" FontSize="20" Background="Gray"/>
+                <Button x:Name="inverseButton" Content="1/x" Width="80" Height="80" FontSize="20" Background="Gray" Click="OperatorButtonClick"/>
 
-                <Button x:Name="squareButton" Content="x^2" Width="80" FontSize="20" Background="Gray"/>
+                <Button x:Name="squareButton" Content="x^2" Width="80" FontSize="20" Background="Gray" Click="OperatorButtonClick"/>
 
-                <Button x:Name="sqrtButton" Content="√x" Width="80" FontSize="20" Background="Gray"/>
+                <Button x:Name="sqrtButton" Content="√x" Width="80" FontSize="20" Background="Gray" Click="OperatorButtonClick"/>
 
-                <Button x:Name="divideButton" Content="÷" Width="80" FontSize="20" Background="Gray"/>
+                <Button x:Name="divideButton" Content="÷" Width="80" FontSize="25" Background="Gray" Click="OperatorButtonClick"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="sevenButton" Content="7" Width="80" Height="80" FontSize="20"/>
+                <Button x:Name="sevenButton" Content="7" Width="80" Height="80" FontSize="20" Click="DigitButtonClick"/>
 
-                <Button x:Name="eightButton" Content="8" Width="80" FontSize="20"/>
+                <Button x:Name="eightButton" Content="8" Width="80" FontSize="20" Click="DigitButtonClick"/>
 
-                <Button x:Name="nineButton" Content="9" Width="80" FontSize="20"/>
+                <Button x:Name="nineButton" Content="9" Width="80" FontSize="20" Click="DigitButtonClick"/>
 
-                <Button x:Name="multiplyButton" Content="×" Width="80" FontSize="20" Background="Gray"/>
+                <Button x:Name="multiplyButton" Content="×" Width="80" FontSize="25" Background="Gray" Click="OperatorButtonClick"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="fourButton" Content="4" Width="80" Height="80" FontSize="20"/>
+                <Button x:Name="fourButton" Content="4" Width="80" Height="80" FontSize="20" Click="DigitButtonClick"/>
 
-                <Button x:Name="fiveButton" Content="5" Width="80" FontSize="20"/>
+                <Button x:Name="fiveButton" Content="5" Width="80" FontSize="20" Click="DigitButtonClick"/>
 
-                <Button x:Name="sixButton" Content="6" Width="80" FontSize="20"/>
+                <Button x:Name="sixButton" Content="6" Width="80" FontSize="20" Click="DigitButtonClick"/>
 
-                <Button x:Name="minusButton" Content="-" Width="80" FontSize="20" Background="Gray"/>
+                <Button x:Name="minusButton" Content="—" Width="80" FontSize="14" Background="Gray" Click="OperatorButtonClick"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="oneButton" Content="1" Width="80" Height="80" FontSize="20"/>
+                <Button x:Name="oneButton" Content="1" Width="80" Height="80" FontSize="20" Click="DigitButtonClick"/>
 
-                <Button x:Name="twoButton" Content="2" Width="80" FontSize="20"/>
+                <Button x:Name="twoButton" Content="2" Width="80" FontSize="20" Click="DigitButtonClick"/>
 
-                <Button x:Name="threeButton" Content="3" Width="80" FontSize="20"/>
+                <Button x:Name="threeButton" Content="3" Width="80" FontSize="20" Click="DigitButtonClick"/>
 
-                <Button x:Name="plusButton" Content="+" Width="80" FontSize="20" Background="Gray"/>
+                <Button x:Name="plusButton" Content="+" Width="80" FontSize="25" Background="Gray" Click="OperatorButtonClick"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="plusMinusButton" Content="±" Width="80" Height="80" FontSize="20" Background="Gray"/>
+                <Button x:Name="opositeButton" Content="±" Width="80" Height="80" FontSize="20" Background="Gray" Click="OperatorButtonClick"/>
 
-                <Button x:Name="zeroButton" Content="0" Width="80" FontSize="20"/>
+                <Button x:Name="zeroButton" Content="0" Width="80" FontSize="20" Click="DigitButtonClick"/>
 
-                <Button x:Name="pointButton" Content="," Width="80" FontSize="20" Background="Gray"/>
+                <Button x:Name="pointButton" Content="," Width="80" FontSize="20" Background="Gray" Click="pointButtonClick"/>
 
-                <Button x:Name="equalButton" Content="=" Width="80" FontSize="20" Background="Gray"/>
+                <Button x:Name="equalButton" Content="=" Width="80" FontSize="20" Background="Gray" Click="OperatorButtonClick"/>
             </StackPanel>
         </StackPanel>
     </Grid>
