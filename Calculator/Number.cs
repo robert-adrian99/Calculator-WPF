@@ -14,7 +14,7 @@ namespace Calculator
             number = 0;
         }
         public double NumberProperty
-        { 
+        {
             get
             {
                 return number;

@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:Calculator"
         mc:Ignorable="d"
         Title="Calculator" ResizeMode="CanMinimize" 
-        Width="320" Height="695"
+        Width="320" Height="694"
         WindowStartupLocation="CenterScreen" WindowStyle="None"
-        Icon="Resources\Calculator.ico">
+        Icon="Resources\Calculator.ico" Keyboard.KeyDown="KeyboardKeyDown">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -30,17 +30,17 @@
         </Grid>
 
         <Menu Grid.Row="1" Height="20" FontSize="13">
-            <MenuItem Header="Edit" VerticalAlignment="Center">
+            <MenuItem Header="_Edit" VerticalAlignment="Center">
                 <MenuItem Header="Cut" Icon="✂️" FontSize="13" Click="CutClick"/>
                 <MenuItem Header="Copy" Icon="📄" FontSize="13" Click="CopyClick"/>
                 <MenuItem Header="Paste" Icon="📋" FontSize="13" Click="PasteClick"/>
             </MenuItem>
 
-            <MenuItem Header="View" VerticalAlignment="Center">
+            <MenuItem Header="_View" VerticalAlignment="Center">
                 <MenuItem Header="Digit Grouping" Icon="⊙" FontSize="13"/>
             </MenuItem>
 
-            <MenuItem Header="Help" VerticalAlignment="Center">
+            <MenuItem Header="_Help" VerticalAlignment="Center">
                 <MenuItem Header="About" Icon="ⓘ" Click="AboutClick"/>
             </MenuItem>
         </Menu>
@@ -51,15 +51,15 @@
             </TextBox>
 
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="MCButton" Content="MC" Height="64" Width="64" FontSize="20" Background="DarkGray"/>
+                <Button x:Name="MCButton" Content="MC" Height="64" Width="64" FontSize="20" Background="DarkGray" Click="MCButtonClick"/>
 
-                <Button x:Name="MRButton" Content="MR" Width="64" FontSize="20" Background="DarkGray"/>
+                <Button x:Name="MRButton" Content="MR" Width="64" FontSize="20" Background="DarkGray" Click="MRButtonClick"/>
 
-                <Button x:Name="MplusButton" Content="M+" Width="64" FontSize="20" Background="DarkGray"/>
+                <Button x:Name="MplusButton" Content="M+" Width="64" FontSize="20" Background="DarkGray" Click="MplusButtonClick"/>
 
-                <Button x:Name="MminusButton" Content="M-" Width="64" FontSize="20" Background="DarkGray"/>
+                <Button x:Name="MminusButton" Content="M-" Width="64" FontSize="20" Background="DarkGray" Click="MminusButtonClick"/>
 
-                <Button x:Name="MSButton" Content="MS" Width="64" FontSize="20" Background="DarkGray"/>
+                <Button x:Name="MSButton" Content="MS" Width="64" FontSize="20" Background="DarkGray" Click="MSButtonClick"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
@@ -117,7 +117,7 @@
 
                 <Button x:Name="zeroButton" Content="0" Width="80" FontSize="20" Click="DigitButtonClick"/>
 
-                <Button x:Name="pointButton" Content="," Width="80" FontSize="20" Background="Gray" Click="pointButtonClick"/>
+                <Button Name="pointButton" Content="," Width="80" FontSize="20" Background="Gray" Click="PointButtonClick"/>
 
                 <Button x:Name="equalButton" Content="=" Width="80" FontSize="20" Background="Gray" Click="OperatorButtonClick"/>
             </StackPanel>

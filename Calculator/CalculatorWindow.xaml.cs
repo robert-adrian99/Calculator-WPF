@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace Calculator
 {
@@ -21,20 +22,22 @@ namespace Calculator
     public partial class CalculatorWindow : Window
     {
         private System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
-
-        String[] unaryOperation = { "sqrtButton", "squareButton", "inverseButton", "opositeButton" };
-        Button pressedButton;
+        private String[] unaryOperation = { "sqrtButton", "squareButton", "inverseButton", "opositeButton" };
+        private Button pressedButton;
         private double previousNumber;
         private double currentNumber;
         private Operator operatorSymbol;
-        bool operationWaitingFirst;
-        bool operationWaiting;
-        bool operatorPressed;
-        bool equalPressed;
-        bool pointActivated;
+        private bool operationWaitingFirst;
+        private bool operationWaiting;
+        private bool operatorPressed;
+        private bool equalPressed;
+        private bool pointActivated;
+
+        private Stack<double> memoryStack;
 
         public CalculatorWindow()
         {
+            memoryStack = new Stack<double>();
             operationWaiting = false;
             operationWaitingFirst = true;
             operatorPressed = false;
@@ -45,6 +48,7 @@ namespace Calculator
             operatorSymbol = new Operator();
             pressedButton = new Button();
             InitializeComponent();
+            pointButton.Content = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
         }
         private void WindowMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -71,10 +75,82 @@ namespace Calculator
         {
             Close();
         }
+        private void CutClick(object sender, RoutedEventArgs e)
+        {
+            displayTextBox.SelectAll();
+            displayTextBox.Cut();
+            pressedButton.Background = Brushes.Gray;
+            displayTextBox.Text = "0";
+            pointActivated = false;
+        }
+        private void CopyClick(object sender, RoutedEventArgs e)
+        {
+            displayTextBox.SelectAll();
+            displayTextBox.Copy();
+        }
+        private void PasteClick(object sender, RoutedEventArgs e)
+        {
+            displayTextBox.Clear();
+            Regex regex = new Regex("^[0-9]+$");
+            if (regex.IsMatch(Clipboard.GetText()) == true)
+            {
+                displayTextBox.Paste();
+                if (displayTextBox.Text.Contains(",") == true)
+                {
+                    pointActivated = true;
+                }
+            }
+            else
+            {
+                displayTextBox.Text = "0";
+            }
+        }
         private void AboutClick(object sender, RoutedEventArgs e)
         {
             AboutWindow window = new AboutWindow();
             window.Show();
+        }
+        private void CEButtonClick(object sender, RoutedEventArgs e)
+        {
+            pressedButton.Background = Brushes.Gray;
+            displayTextBox.Clear();
+            displayTextBox.Text = "0";
+        }
+        private void CButtonClick(object sender, RoutedEventArgs e)
+        {
+            operationWaitingFirst = true;
+            pressedButton.Background = Brushes.Gray;
+            previousNumber = 0;
+            operationWaiting = false;
+            operatorPressed = false;
+            operatorSymbol.OperatorProperty = Operator.OperatorSymbol.None;
+            displayTextBox.Clear();
+            displayTextBox.Text = "0";
+        }
+        private void DeleteButtonClick(object sender, RoutedEventArgs e)
+        {
+            double val;
+            if (double.TryParse(displayTextBox.Text, out val) == false)
+            {
+                displayTextBox.Text = "0";
+            }
+            if (displayTextBox.Text.Length > 1)
+            {
+                displayTextBox.Text = displayTextBox.Text.Substring(0, displayTextBox.Text.Length - 1);
+            }
+            else
+            {
+                displayTextBox.Text = "0";
+            }
+        }
+        private void PointButtonClick(object sender, RoutedEventArgs e)
+        {
+            pressedButton.Background = Brushes.Gray;
+            if (pointActivated == false)
+            {
+                displayTextBox.Text += CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+                pointActivated = true;
+            }
         }
         private void DigitButtonClick(object sender, RoutedEventArgs e)
         {
@@ -101,7 +177,6 @@ namespace Calculator
             }
             operatorPressed = false;
         }
-
         private void OperatorButtonClick(object sender, RoutedEventArgs e)
         {
             pointActivated = false;
@@ -193,75 +268,57 @@ namespace Calculator
 
             operatorPressed = true;
         }
-        private void CEButtonClick(object sender, RoutedEventArgs e)
+        private void KeyboardKeyDown(object sender, KeyEventArgs e)
         {
-            pressedButton.Background = Brushes.Gray;
-            displayTextBox.Clear();
-            displayTextBox.Text = "0";
-        }
-        private void CButtonClick(object sender, RoutedEventArgs e)
-        {
-            operationWaitingFirst = true;
-            pressedButton.Background = Brushes.Gray;
-            previousNumber = 0;
-            operationWaiting = false;
-            operatorPressed = false;
-            operatorSymbol.OperatorProperty = Operator.OperatorSymbol.None;
-            displayTextBox.Clear();
-            displayTextBox.Text = "0";
-        }
-        private void CutClick(object sender, RoutedEventArgs e)
-        {
-            pressedButton.Background = Brushes.Gray;
-            displayTextBox.Cut();
-            displayTextBox.Text = "0";
-            pointActivated = false;
-        }
-        private void CopyClick(object sender, RoutedEventArgs e)
-        {
-            displayTextBox.Copy();
-        }
-        private void PasteClick(object sender, RoutedEventArgs e)
-        {
-            displayTextBox.Clear();
-            Regex regex = new Regex("[0-9]+");
-            if (regex.IsMatch(Clipboard.GetText()) == true)
+            if (e.Key == Key.D0 || e.Key == Key.D1 || e.Key == Key.D2 || e.Key == Key.D3 || e.Key == Key.D4 || e.Key == Key.D5 || e.Key == Key.D6 || e.Key == Key.D7 || e.Key == Key.D8 || e.Key == Key.D9 || e.Key == Key.NumPad0 || e.Key == Key.NumPad1 || e.Key == Key.NumPad2 || e.Key == Key.NumPad3 || e.Key == Key.NumPad4 || e.Key == Key.NumPad5 || e.Key == Key.NumPad6 || e.Key == Key.NumPad7 || e.Key == Key.NumPad8 || e.Key == Key.NumPad9)
             {
-                displayTextBox.Paste();
-                if (displayTextBox.Text.Contains(",") == true)
+                pressedButton.Background = Brushes.Gray;
+                if (equalPressed == true)
                 {
-                    pointActivated = true;
+                    CButtonClick(sender, e);
+                    equalPressed = false;
                 }
-            }
-            else
-            {
-                displayTextBox.Text = "0";
+                if (operationWaiting == true && operationWaitingFirst == true)
+                {
+                    displayTextBox.Clear();
+                    displayTextBox.Text = "0";
+                    operationWaitingFirst = false;
+                }
+                if (displayTextBox.Text != "0")
+                {
+                    displayTextBox.Text += e.Key.ToString()[e.Key.ToString().Length - 1].ToString();
+                }
+                else
+                {
+                    displayTextBox.Text = e.Key.ToString()[e.Key.ToString().Length - 1].ToString();
+                }
+                operatorPressed = false;
             }
         }
-        private void pointButtonClick(object sender, RoutedEventArgs e)
+        private void MCButtonClick(object sender, RoutedEventArgs e)
         {
-            pressedButton.Background = Brushes.Gray;
-            if (pointActivated == false)
-            {
-                displayTextBox.Text += ",";
-                pointActivated = true;
-            }
+            memoryStack.Clear();
         }
-        private void DeleteButtonClick(object sender, RoutedEventArgs e)
+        private void MRButtonClick(object sender, RoutedEventArgs e)
         {
-            double val;
-            if (double.TryParse(displayTextBox.Text, out val) == false)
-            {
-                displayTextBox.Text = "0";
-            }
-            if (displayTextBox.Text.Length > 1)
-            {
-                displayTextBox.Text = displayTextBox.Text.Substring(0, displayTextBox.Text.Length - 1);
-            }
-            else
-            {
-                displayTextBox.Text = "0";
-            }
+            displayTextBox.Text = memoryStack.Peek().ToString();
+        }
+        private void MplusButtonClick(object sender, RoutedEventArgs e)
+        {
+            double number = memoryStack.Peek();
+            memoryStack.Pop();
+            memoryStack.Push(number + double.Parse(displayTextBox.Text));
+        }
+        private void MminusButtonClick(object sender, RoutedEventArgs e)
+        {
+            double number = memoryStack.Peek();
+            memoryStack.Pop();
+            memoryStack.Push(number - double.Parse(displayTextBox.Text));
+        }
+        private void MSButtonClick(object sender, RoutedEventArgs e)
+        {
+            memoryStack.Push(double.Parse(displayTextBox.Text));
+            displayTextBox.Text = "0";
         }
     }
 }
