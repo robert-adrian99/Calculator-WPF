@@ -130,17 +130,13 @@ namespace Calculator
         private void DeleteButtonClick(object sender, RoutedEventArgs e)
         {
             double val;
-            if (double.TryParse(displayTextBox.Text, out val) == false)
+            if (double.TryParse(displayTextBox.Text, out val) == false || displayTextBox.Text.Length <= 1 || equalPressed == true)
             {
                 displayTextBox.Text = "0";
             }
-            if (displayTextBox.Text.Length > 1)
+            else if (displayTextBox.Text.Length > 1)
             {
                 displayTextBox.Text = displayTextBox.Text.Substring(0, displayTextBox.Text.Length - 1);
-            }
-            else
-            {
-                displayTextBox.Text = "0";
             }
         }
         private void PointButtonClick(object sender, RoutedEventArgs e)
@@ -160,12 +156,11 @@ namespace Calculator
                 CButtonClick(sender, e);
                 equalPressed = false;
             }
-            if(operationWaiting == true && operationWaitingFirst == true)
+            if (operationWaiting == true && operationWaitingFirst == true)
             {
                 displayTextBox.Clear();
                 displayTextBox.Text = "0";
                 operationWaitingFirst = false;
-
             }
             if (displayTextBox.Text != "0")
             {
@@ -208,6 +203,7 @@ namespace Calculator
 
             if (unaryOperation.Contains((sender as Button).Name))
             {
+                (sender as Button).Background = Brushes.Gray;
                 if (operationWaiting == true && operatorPressed == false)
                 {
                     try
@@ -234,7 +230,7 @@ namespace Calculator
                     displayTextBox.Text = exception.Message;
                 }
             }
-
+            currentNumber = double.Parse(displayTextBox.Text);
             if (operationWaiting == true && operatorPressed == false)
             {
                 try
@@ -293,6 +289,136 @@ namespace Calculator
                     displayTextBox.Text = e.Key.ToString()[e.Key.ToString().Length - 1].ToString();
                 }
                 operatorPressed = false;
+            }
+            else if (e.Key == Key.Add || e.Key == Key.Subtract || e.Key == Key.Multiply || e.Key == Key.Divide || e.Key == Key.Return || e.Key == Key.Enter)
+            {
+                pointActivated = false;
+                pressedButton.Background = Brushes.Gray;
+                currentNumber = double.Parse(displayTextBox.Text);
+
+                if (e.Key == Key.Return || e.Key == Key.Enter)
+                {
+                    if (operationWaiting == true && operatorPressed == false)
+                    {
+                        try
+                        {
+                            previousNumber = operatorSymbol.PerformBinaryOperation(previousNumber, currentNumber);
+                        }
+                        catch (ArithmeticException exception)
+                        {
+                            displayTextBox.Text = exception.Message;
+                        }
+                        operatorSymbol.OperatorProperty = Operator.OperatorSymbol.None;
+                        operationWaiting = false;
+                        equalPressed = true;
+                        displayTextBox.Text = previousNumber.ToString();
+                        return;
+                    }
+                }
+                else
+                {
+                    if (operationWaiting == true && operatorPressed == false)
+                    {
+                        try
+                        {
+                            previousNumber = operatorSymbol.PerformBinaryOperation(previousNumber, currentNumber);
+                            displayTextBox.Text = previousNumber.ToString();
+                        }
+                        catch (ArithmeticException exception)
+                        {
+                            displayTextBox.FontSize = 5;
+                            displayTextBox.Text = exception.Message;
+                        }
+                        switch(e.Key)
+                        {
+                            case Key.Add:
+                                plusButton.Background = Brushes.White;
+                                pressedButton = plusButton;
+                                operatorSymbol.DetectOperator("plusButton");
+                                break;
+                            case Key.Subtract:
+                                minusButton.Background = Brushes.White;
+                                pressedButton = minusButton;
+                                operatorSymbol.DetectOperator("minusButton");
+                                break;
+                            case Key.Multiply:
+                                multiplyButton.Background = Brushes.White;
+                                pressedButton = multiplyButton;
+                                operatorSymbol.DetectOperator("multiplyButton");
+                                break;
+                            case Key.Divide:
+                                divideButton.Background = Brushes.White;
+                                pressedButton = divideButton;
+                                operatorSymbol.DetectOperator("divideButton");
+                                break;
+                        }
+                        operationWaitingFirst = true;
+                    }
+                    else if (operatorPressed == false)
+                    {
+                        previousNumber = currentNumber;
+                        switch (e.Key)
+                        {
+                            case Key.Add:
+                                plusButton.Background = Brushes.White;
+                                pressedButton = plusButton;
+                                operatorSymbol.DetectOperator("plusButton");
+                                break;
+                            case Key.Subtract:
+                                minusButton.Background = Brushes.White;
+                                pressedButton = minusButton;
+                                operatorSymbol.DetectOperator("minusButton");
+                                break;
+                            case Key.Multiply:
+                                multiplyButton.Background = Brushes.White;
+                                pressedButton = multiplyButton;
+                                operatorSymbol.DetectOperator("multiplyButton");
+                                break;
+                            case Key.Divide:
+                                divideButton.Background = Brushes.White;
+                                pressedButton = divideButton;
+                                operatorSymbol.DetectOperator("divideButton");
+                                break;
+                        }
+                        currentNumber = 0;
+                        operationWaiting = true;
+                        operationWaitingFirst = true;
+                    }
+                    else
+                    {
+                        switch (e.Key)
+                        {
+                            case Key.Add:
+                                plusButton.Background = Brushes.White;
+                                pressedButton = plusButton;
+                                operatorSymbol.DetectOperator("plusButton");
+                                break;
+                            case Key.Subtract:
+                                minusButton.Background = Brushes.White;
+                                pressedButton = minusButton;
+                                operatorSymbol.DetectOperator("minusButton");
+                                break;
+                            case Key.Multiply:
+                                multiplyButton.Background = Brushes.White;
+                                pressedButton = multiplyButton;
+                                operatorSymbol.DetectOperator("multiplyButton");
+                                break;
+                            case Key.Divide:
+                                divideButton.Background = Brushes.White;
+                                pressedButton = divideButton;
+                                operatorSymbol.DetectOperator("divideButton");
+                                break;
+                        }
+                        currentNumber = 0;
+                        operationWaiting = true;
+                        operationWaitingFirst = true;
+                    }
+                }
+                operatorPressed = true;
+            }
+            else if(e.Key == Key.Escape)
+            {
+                CButtonClick(sender, e);
             }
         }
         private void MCButtonClick(object sender, RoutedEventArgs e)
