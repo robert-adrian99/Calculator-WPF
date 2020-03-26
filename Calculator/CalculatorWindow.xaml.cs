@@ -20,7 +20,7 @@ namespace Calculator
     /// Interaction logic for CalculatorWindow.xaml
     /// </summary>
     public partial class CalculatorWindow : Window
-    { 
+    {
         private System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
 
         private String[] unaryOperation = { "sqrtButton", "squareButton", "inverseButton" };
@@ -99,7 +99,7 @@ namespace Calculator
         private void PasteClick(object sender, RoutedEventArgs e)
         {
             displayTextBox.Clear();
-            Regex regex = new Regex("^[0-9]+$");
+            Regex regex = new Regex("-?[0-9]||[0-9][.0-9]||[0-9][,0-9]");
             if (regex.IsMatch(Clipboard.GetText()) == true)
             {
                 displayTextBox.Paste();
@@ -158,6 +158,12 @@ namespace Calculator
         }
         private void DigitButtonClick(object sender, RoutedEventArgs e)
         {
+            displayTextBox.FontSize = 50;
+            double val;
+            if (double.TryParse(displayTextBox.Text, out val) == false)
+            {
+                CButtonClick(sender, e);
+            }
             pressedButton.Background = Brushes.Gray;
             if (equalPressed == true)
             {
@@ -216,12 +222,18 @@ namespace Calculator
         }
         private void OperatorButtonClick(object sender, RoutedEventArgs e)
         {
+            displayTextBox.FontSize = 50;
+            double val;
+            if (double.TryParse(displayTextBox.Text, out val) == false)
+            {
+                CButtonClick(sender, e);
+                return;
+            }
             pointActivated = false;
             pressedButton.Background = Brushes.Gray;
             currentNumber = double.Parse(displayTextBox.Text);
             (sender as Button).Background = Brushes.White;
             pressedButton = sender as Button;
-
             if ((sender as Button).Name == "equalButton")
             {
                 (sender as Button).Background = Brushes.Gray;
@@ -233,7 +245,9 @@ namespace Calculator
                     }
                     catch (ArithmeticException exception)
                     {
+                        displayTextBox.FontSize = 30;
                         displayTextBox.Text = exception.Message;
+                        return;
                     }
                     operatorSymbol.OperatorProperty = Operator.OperatorSymbol.None;
                     operationWaiting = false;
@@ -242,7 +256,7 @@ namespace Calculator
                     if (digitGrouping == true)
                     {
                         string stringDecimal = "";
-                        if (pointActivated == true)
+                        if (displayTextBox.Text.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator))
                         {
                             stringDecimal = displayTextBox.Text.Substring(displayTextBox.Text.IndexOf(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
                         }
@@ -253,15 +267,21 @@ namespace Calculator
                         {
                             stringToDisplay = stringToDisplay.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator + "00", "");
                         }
-                        if (pointActivated == true)
+                        if (displayTextBox.Text.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator))
                         {
                             stringToDisplay += stringDecimal;
                         }
-                        if (pointActivated == true && stringToDisplay[stringToDisplay.Length - 1] == '0')
+                        if (displayTextBox.Text.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator) && stringToDisplay[stringToDisplay.Length - 1] == '0')
                         {
                             stringToDisplay = stringToDisplay.Substring(0, stringToDisplay.Length - 1);
                         }
                         displayTextBox.Text = stringToDisplay;
+                    }
+                    else
+                    {
+                        displayTextBox.Text += (sender as Button).Content.ToString();
+                        double number = double.Parse(displayTextBox.Text);
+                        displayTextBox.Text = number.ToString("G");
                     }
                     return;
                 }
@@ -276,10 +296,40 @@ namespace Calculator
                     {
                         previousNumber = operatorSymbol.PerformBinaryOperation(previousNumber, currentNumber);
                         displayTextBox.Text = previousNumber.ToString();
+                        if (digitGrouping == true)
+                        {
+                            string stringDecimal = "";
+                            if (displayTextBox.Text.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator))
+                            {
+                                stringDecimal = displayTextBox.Text.Substring(displayTextBox.Text.IndexOf(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
+                            }
+                            double numberOnDisplay = double.Parse(displayTextBox.Text);
+                            int number = (int)numberOnDisplay;
+                            string stringToDisplay = number.ToString("N", CultureInfo.CurrentCulture);
+                            if (stringToDisplay.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator + "00"))
+                            {
+                                stringToDisplay = stringToDisplay.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator + "00", "");
+                            }
+                            if (displayTextBox.Text.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator))
+                            {
+                                stringToDisplay += stringDecimal;
+                            }
+                            if (displayTextBox.Text.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator) && stringToDisplay[stringToDisplay.Length - 1] == '0')
+                            {
+                                stringToDisplay = stringToDisplay.Substring(0, stringToDisplay.Length - 1);
+                            }
+                            displayTextBox.Text = stringToDisplay;
+                        }
+                        else
+                        {
+                            displayTextBox.Text += (sender as Button).Content.ToString();
+                            double number = double.Parse(displayTextBox.Text);
+                            displayTextBox.Text = number.ToString("G");
+                        }
                     }
                     catch (ArithmeticException exception)
                     {
-                        displayTextBox.FontSize = 5;
+                        displayTextBox.FontSize = 30;
                         displayTextBox.Text = exception.Message;
                     }
                     return;
@@ -290,10 +340,42 @@ namespace Calculator
                 {
                     previousNumber = operatorSymbol.PerformUnaryOperation(previousNumber);
                     displayTextBox.Text = previousNumber.ToString();
+                    if (digitGrouping == true)
+                    {
+                        string stringDecimal = "";
+                        if (displayTextBox.Text.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator))
+                        {
+                            stringDecimal = displayTextBox.Text.Substring(displayTextBox.Text.IndexOf(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
+                        }
+                        double numberOnDisplay = double.Parse(displayTextBox.Text);
+                        int number = (int)numberOnDisplay;
+                        string stringToDisplay = number.ToString("N", CultureInfo.CurrentCulture);
+                        if (stringToDisplay.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator + "00"))
+                        {
+                            stringToDisplay = stringToDisplay.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator + "00", "");
+                        }
+                        if (displayTextBox.Text.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator))
+                        {
+                            stringToDisplay += stringDecimal;
+                        }
+                        if (displayTextBox.Text.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator) && stringToDisplay[stringToDisplay.Length - 1] == '0')
+                        {
+                            stringToDisplay = stringToDisplay.Substring(0, stringToDisplay.Length - 1);
+                        }
+                        displayTextBox.Text = stringToDisplay;
+                    }
+                    else
+                    {
+                        displayTextBox.Text += (sender as Button).Content.ToString();
+                        double number = double.Parse(displayTextBox.Text);
+                        displayTextBox.Text = number.ToString("G");
+                    }
                 }
                 catch (ArithmeticException exception)
                 {
+                    displayTextBox.FontSize = 30;
                     displayTextBox.Text = exception.Message;
+                    return;
                 }
             }
             currentNumber = double.Parse(displayTextBox.Text);
@@ -303,10 +385,40 @@ namespace Calculator
                 {
                     previousNumber = operatorSymbol.PerformBinaryOperation(previousNumber, currentNumber);
                     displayTextBox.Text = previousNumber.ToString();
+                    if (digitGrouping == true)
+                    {
+                        string stringDecimal = "";
+                        if (displayTextBox.Text.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator))
+                        {
+                            stringDecimal = displayTextBox.Text.Substring(displayTextBox.Text.IndexOf(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
+                        }
+                        double numberOnDisplay = double.Parse(displayTextBox.Text);
+                        int number = (int)numberOnDisplay;
+                        string stringToDisplay = number.ToString("N", CultureInfo.CurrentCulture);
+                        if (stringToDisplay.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator + "00"))
+                        {
+                            stringToDisplay = stringToDisplay.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator + "00", "");
+                        }
+                        if (displayTextBox.Text.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator))
+                        {
+                            stringToDisplay += stringDecimal;
+                        }
+                        if (displayTextBox.Text.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator) && stringToDisplay[stringToDisplay.Length - 1] == '0')
+                        {
+                            stringToDisplay = stringToDisplay.Substring(0, stringToDisplay.Length - 1);
+                        }
+                        displayTextBox.Text = stringToDisplay;
+                    }
+                    else
+                    {
+                        displayTextBox.Text += (sender as Button).Content.ToString();
+                        double number = double.Parse(displayTextBox.Text);
+                        displayTextBox.Text = number.ToString("G");
+                    }
                 }
                 catch (ArithmeticException exception)
                 {
-                    displayTextBox.FontSize = 5;
+                    displayTextBox.FontSize = 30;
                     displayTextBox.Text = exception.Message;
                 }
                 operatorSymbol.DetectOperator((sender as Button).Name);
@@ -327,7 +439,6 @@ namespace Calculator
                 operationWaiting = true;
                 operationWaitingFirst = true;
             }
-
             operatorPressed = true;
         }
         private void KeyboardKeyDown(object sender, KeyEventArgs e)
@@ -426,10 +537,10 @@ namespace Calculator
                         }
                         catch (ArithmeticException exception)
                         {
-                            displayTextBox.FontSize = 5;
+                            displayTextBox.FontSize = 30;
                             displayTextBox.Text = exception.Message;
                         }
-                        switch(e.Key)
+                        switch (e.Key)
                         {
                             case Key.Add:
                                 plusButton.Background = Brushes.White;
@@ -516,30 +627,50 @@ namespace Calculator
                 }
                 operatorPressed = true;
             }
-            else if(e.Key == Key.Escape)
+            else if (e.Key == Key.Escape)
             {
                 CButtonClick(sender, e);
             }
         }
         private void MCButtonClick(object sender, RoutedEventArgs e)
         {
-            memoryStack.Clear();
+            if (memoryStack.Count != 0)
+            {
+                memoryStack.Clear();
+            }
         }
         private void MRButtonClick(object sender, RoutedEventArgs e)
         {
-            displayTextBox.Text = memoryStack.Peek().ToString();
+            if (memoryStack.Count != 0)
+            {
+                displayTextBox.Text = memoryStack.Peek().ToString();
+            }
         }
         private void MplusButtonClick(object sender, RoutedEventArgs e)
         {
-            double number = memoryStack.Peek();
-            memoryStack.Pop();
-            memoryStack.Push(number + double.Parse(displayTextBox.Text));
+            if (memoryStack.Count != 0)
+            {
+                double number = memoryStack.Peek();
+                memoryStack.Pop();
+                memoryStack.Push(number + double.Parse(displayTextBox.Text));
+            }
+            else
+            {
+                memoryStack.Push(0);
+            }
         }
         private void MminusButtonClick(object sender, RoutedEventArgs e)
         {
-            double number = memoryStack.Peek();
-            memoryStack.Pop();
-            memoryStack.Push(number - double.Parse(displayTextBox.Text));
+            if (memoryStack.Count != 0)
+            {
+                double number = memoryStack.Peek();
+                memoryStack.Pop();
+                memoryStack.Push(number - double.Parse(displayTextBox.Text));
+            }
+            else
+            {
+                memoryStack.Push(0);
+            }
         }
         private void MSButtonClick(object sender, RoutedEventArgs e)
         {
