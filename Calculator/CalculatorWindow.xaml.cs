@@ -290,7 +290,7 @@ namespace Calculator
                 }
                 operatorPressed = false;
             }
-            else if (e.Key == Key.Add || e.Key == Key.Subtract || e.Key == Key.Multiply || e.Key == Key.Divide || e.Key == Key.Return || e.Key == Key.Enter)
+            else if (e.Key == Key.Add || e.Key == Key.Subtract || e.Key == Key.Multiply || e.Key == Key.Divide || e.Key == Key.E)
             {
                 pointActivated = false;
                 pressedButton.Background = Brushes.Gray;
