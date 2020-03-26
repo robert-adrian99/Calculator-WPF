@@ -38,7 +38,8 @@
             </MenuItem>
 
             <MenuItem Header="_View" VerticalAlignment="Center">
-                <MenuItem Header="Digit Grouping" Icon="⊙" FontSize="13"/>
+                <CheckBox Content="Digit Grouping" x:Name="checkBoxDigitGrouping" FontSize="13" Click="DigitGroupingClick"/>
+                <!--Icon="⊙"-->
             </MenuItem>
 
             <MenuItem Header="_Help" VerticalAlignment="Center">
