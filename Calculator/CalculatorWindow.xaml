@@ -64,7 +64,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="percentageButton" Content="%" Width="80" Height="80" FontSize="20" Background="Gray" Click="OperatorButtonClick"/>
+                <Button x:Name="percentageButton" Content="%" Width="80" Height="80" FontSize="20" Background="Gray" Click="PercentageButtonClick"/>
 
                 <Button x:Name="CEButton" Content="CE" Width="80" FontSize="20" Background="Gray" Click="CEButtonClick"/>
 

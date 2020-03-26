@@ -446,6 +446,28 @@ namespace Calculator
             memoryStack.Push(double.Parse(displayTextBox.Text));
             displayTextBox.Text = "0";
         }
+        private void PercentageButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (operationWaiting == true)
+            {
+                double percentage = double.Parse(displayTextBox.Text);
+                percentage /= 100;
+                currentNumber = previousNumber * percentage;
+                displayTextBox.Text = currentNumber.ToString();
+            }
+            else
+            {
+                previousNumber = 0;
+                operationWaiting = false;
+                operationWaitingFirst = false;
+                operatorPressed = false;
+                pointActivated = false;
+                equalPressed = false;
+                pressedButton.Background = Brushes.Gray;
+                operatorSymbol.OperatorProperty = Operator.OperatorSymbol.None;
+                displayTextBox.Text = "0";
+            }
+        }
     }
 }
 
