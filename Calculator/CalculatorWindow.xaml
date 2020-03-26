@@ -39,7 +39,6 @@
 
             <MenuItem Header="_View" VerticalAlignment="Center">
                 <CheckBox Content="Digit Grouping" x:Name="checkBoxDigitGrouping" FontSize="13" Click="DigitGroupingClick"/>
-                <!--Icon="⊙"-->
             </MenuItem>
 
             <MenuItem Header="_Help" VerticalAlignment="Center">
@@ -53,75 +52,75 @@
             </TextBox>
 
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="MCButton" Content="MC" Height="64" Width="64" FontSize="20" Background="DarkGray" Click="MCButtonClick"/>
+                <Button x:Name="MCButton" Content="MC" Height="64" Width="64" FontSize="20" Background="DarkGray" Click="MCButtonClick" Focusable="False"/>
 
-                <Button x:Name="MRButton" Content="MR" Width="64" FontSize="20" Background="DarkGray" Click="MRButtonClick"/>
+                <Button x:Name="MRButton" Content="MR" Width="64" FontSize="20" Background="DarkGray" Click="MRButtonClick" Focusable="False"/>
 
-                <Button x:Name="MplusButton" Content="M+" Width="64" FontSize="20" Background="DarkGray" Click="MplusButtonClick"/>
+                <Button x:Name="MplusButton" Content="M+" Width="64" FontSize="20" Background="DarkGray" Click="MplusButtonClick" Focusable="False"/>
 
-                <Button x:Name="MminusButton" Content="M-" Width="64" FontSize="20" Background="DarkGray" Click="MminusButtonClick"/>
+                <Button x:Name="MminusButton" Content="M-" Width="64" FontSize="20" Background="DarkGray" Click="MminusButtonClick" Focusable="False"/>
 
-                <Button x:Name="MSButton" Content="MS" Width="64" FontSize="20" Background="DarkGray" Click="MSButtonClick"/>
+                <Button x:Name="MSButton" Content="MS" Width="64" FontSize="20" Background="DarkGray" Click="MSButtonClick" Focusable="False"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="percentageButton" Content="%" Width="80" Height="80" FontSize="20" Background="Gray" Click="PercentageButtonClick"/>
+                <Button x:Name="percentageButton" Content="%" Width="80" Height="80" FontSize="20" Background="Gray" Click="PercentageButtonClick" Focusable="False"/>
 
-                <Button x:Name="CEButton" Content="CE" Width="80" FontSize="20" Background="Gray" Click="CEButtonClick"/>
+                <Button x:Name="CEButton" Content="CE" Width="80" FontSize="20" Background="Gray" Click="CEButtonClick" Focusable="False"/>
 
-                <Button x:Name="CButton" Content="C" Width="80" FontSize="20" Background="Gray" Click="CButtonClick"/>
+                <Button x:Name="CButton" Content="C" Width="80" FontSize="20" Background="Gray" Click="CButtonClick" Focusable="False"/>
 
-                <Button x:Name="DeleteButton" Content="⌦" Width="80" FontSize="20" Background="Gray" Click="DeleteButtonClick"/>
+                <Button x:Name="DeleteButton" Content="⌦" Width="80" FontSize="20" Background="Gray" Click="DeleteButtonClick" Focusable="False"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="inverseButton" Content="1/x" Width="80" Height="80" FontSize="20" Background="Gray" Click="OperatorButtonClick"/>
+                <Button x:Name="inverseButton" Content="1/x" Width="80" Height="80" FontSize="20" Background="Gray" Click="OperatorButtonClick" Focusable="False"/>
 
-                <Button x:Name="squareButton" Content="x^2" Width="80" FontSize="20" Background="Gray" Click="OperatorButtonClick"/>
+                <Button x:Name="squareButton" Content="x^2" Width="80" FontSize="20" Background="Gray" Click="OperatorButtonClick" Focusable="False"/>
 
-                <Button x:Name="sqrtButton" Content="√x" Width="80" FontSize="20" Background="Gray" Click="OperatorButtonClick"/>
+                <Button x:Name="sqrtButton" Content="√x" Width="80" FontSize="20" Background="Gray" Click="OperatorButtonClick" Focusable="False"/>
 
-                <Button x:Name="divideButton" Content="÷" Width="80" FontSize="25" Background="Gray" Click="OperatorButtonClick"/>
+                <Button x:Name="divideButton" Content="÷" Width="80" FontSize="25" Background="Gray" Click="OperatorButtonClick" Focusable="False"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="sevenButton" Content="7" Width="80" Height="80" FontSize="20" Click="DigitButtonClick"/>
+                <Button x:Name="sevenButton" Content="7" Width="80" Height="80" FontSize="20" Click="DigitButtonClick" Focusable="False"/>
 
-                <Button x:Name="eightButton" Content="8" Width="80" FontSize="20" Click="DigitButtonClick"/>
+                <Button x:Name="eightButton" Content="8" Width="80" FontSize="20" Click="DigitButtonClick" Focusable="False"/>
 
-                <Button x:Name="nineButton" Content="9" Width="80" FontSize="20" Click="DigitButtonClick"/>
+                <Button x:Name="nineButton" Content="9" Width="80" FontSize="20" Click="DigitButtonClick" Focusable="False"/>
 
-                <Button x:Name="multiplyButton" Content="×" Width="80" FontSize="25" Background="Gray" Click="OperatorButtonClick"/>
+                <Button x:Name="multiplyButton" Content="×" Width="80" FontSize="25" Background="Gray" Click="OperatorButtonClick" Focusable="False"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="fourButton" Content="4" Width="80" Height="80" FontSize="20" Click="DigitButtonClick"/>
+                <Button x:Name="fourButton" Content="4" Width="80" Height="80" FontSize="20" Click="DigitButtonClick" Focusable="False"/>
 
-                <Button x:Name="fiveButton" Content="5" Width="80" FontSize="20" Click="DigitButtonClick"/>
+                <Button x:Name="fiveButton" Content="5" Width="80" FontSize="20" Click="DigitButtonClick" Focusable="False"/>
 
-                <Button x:Name="sixButton" Content="6" Width="80" FontSize="20" Click="DigitButtonClick"/>
+                <Button x:Name="sixButton" Content="6" Width="80" FontSize="20" Click="DigitButtonClick" Focusable="False"/>
 
-                <Button x:Name="minusButton" Content="—" Width="80" FontSize="14" Background="Gray" Click="OperatorButtonClick"/>
+                <Button x:Name="minusButton" Content="—" Width="80" FontSize="14" Background="Gray" Click="OperatorButtonClick" Focusable="False"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="oneButton" Content="1" Width="80" Height="80" FontSize="20" Click="DigitButtonClick"/>
+                <Button x:Name="oneButton" Content="1" Width="80" Height="80" FontSize="20" Click="DigitButtonClick" Focusable="False"/>
 
-                <Button x:Name="twoButton" Content="2" Width="80" FontSize="20" Click="DigitButtonClick"/>
+                <Button x:Name="twoButton" Content="2" Width="80" FontSize="20" Click="DigitButtonClick" Focusable="False"/>
 
-                <Button x:Name="threeButton" Content="3" Width="80" FontSize="20" Click="DigitButtonClick"/>
+                <Button x:Name="threeButton" Content="3" Width="80" FontSize="20" Click="DigitButtonClick" Focusable="False"/>
 
-                <Button x:Name="plusButton" Content="+" Width="80" FontSize="25" Background="Gray" Click="OperatorButtonClick"/>
+                <Button x:Name="plusButton" Content="+" Width="80" FontSize="25" Background="Gray" Click="OperatorButtonClick" Focusable="False"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="opositeButton" Content="±" Width="80" Height="80" FontSize="20" Background="Gray" Click="OperatorButtonClick"/>
+                <Button x:Name="opositeButton" Content="±" Width="80" Height="80" FontSize="20" Background="Gray" Click="opositeButtonClick" Focusable="False"/>
 
-                <Button x:Name="zeroButton" Content="0" Width="80" FontSize="20" Click="DigitButtonClick"/>
+                <Button x:Name="zeroButton" Content="0" Width="80" FontSize="20" Click="DigitButtonClick" Focusable="False"/>
 
-                <Button Name="pointButton" Content="," Width="80" FontSize="20" Background="Gray" Click="PointButtonClick"/>
+                <Button Name="pointButton" Content="," Width="80" FontSize="20" Background="Gray" Click="PointButtonClick" Focusable="False"/>
 
-                <Button x:Name="equalButton" Content="=" Width="80" FontSize="20" Background="Gray" Click="OperatorButtonClick"/>
+                <Button x:Name="equalButton" Content="=" Width="80" FontSize="20" Background="Gray" Click="OperatorButtonClick" Focusable="False"/>
             </StackPanel>
         </StackPanel>
     </Grid>

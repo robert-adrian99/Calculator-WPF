@@ -23,7 +23,7 @@ namespace Calculator
     { 
         private System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
 
-        private String[] unaryOperation = { "sqrtButton", "squareButton", "inverseButton", "opositeButton" };
+        private String[] unaryOperation = { "sqrtButton", "squareButton", "inverseButton" };
         private Button pressedButton;
         private double previousNumber;
         private double currentNumber;
@@ -50,6 +50,8 @@ namespace Calculator
             operatorSymbol = new Operator();
             pressedButton = new Button();
             InitializeComponent();
+            displayTextBox.MaxLines = 1;
+            displayTextBox.MaxLength = 9;
             digitGrouping = Properties.Settings.Default.DigitGroupingChecked;
             checkBoxDigitGrouping.IsChecked = digitGrouping;
             pointButton.Content = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
@@ -237,6 +239,30 @@ namespace Calculator
                     operationWaiting = false;
                     equalPressed = true;
                     displayTextBox.Text = previousNumber.ToString();
+                    if (digitGrouping == true)
+                    {
+                        string stringDecimal = "";
+                        if (pointActivated == true)
+                        {
+                            stringDecimal = displayTextBox.Text.Substring(displayTextBox.Text.IndexOf(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
+                        }
+                        double numberOnDisplay = double.Parse(displayTextBox.Text);
+                        int number = (int)numberOnDisplay;
+                        string stringToDisplay = number.ToString("N", CultureInfo.CurrentCulture);
+                        if (stringToDisplay.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator + "00"))
+                        {
+                            stringToDisplay = stringToDisplay.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator + "00", "");
+                        }
+                        if (pointActivated == true)
+                        {
+                            stringToDisplay += stringDecimal;
+                        }
+                        if (pointActivated == true && stringToDisplay[stringToDisplay.Length - 1] == '0')
+                        {
+                            stringToDisplay = stringToDisplay.Substring(0, stringToDisplay.Length - 1);
+                        }
+                        displayTextBox.Text = stringToDisplay;
+                    }
                     return;
                 }
             }
@@ -364,7 +390,7 @@ namespace Calculator
                 }
                 operatorPressed = false;
             }
-            else if (e.Key == Key.Add || e.Key == Key.Subtract || e.Key == Key.Multiply || e.Key == Key.Divide || e.Key == Key.E)
+            else if (e.Key == Key.Add || e.Key == Key.Subtract || e.Key == Key.Multiply || e.Key == Key.Divide || e.Key == Key.Enter)
             {
                 pointActivated = false;
                 pressedButton.Background = Brushes.Gray;
@@ -547,7 +573,6 @@ namespace Calculator
             digitGrouping = !digitGrouping;
             if (digitGrouping == true)
             {
-                // displayTextBox.Text += e.Key.ToString()[e.Key.ToString().Length - 1].ToString();
                 string stringDecimal = "";
                 if (pointActivated == true)
                 {
@@ -568,15 +593,43 @@ namespace Calculator
                 {
                     stringToDisplay = stringToDisplay.Substring(0, stringToDisplay.Length - 1);
                 }
-                //if (pointActivated == true && (e.Key == Key.D0 || e.Key == Key.NumPad0))
-                //{
-                //    stringToDisplay += "0";
-                //}
                 displayTextBox.Text = stringToDisplay;
             }
             else
             {
-                //displayTextBox.Text += e.Key.ToString()[e.Key.ToString().Length - 1].ToString();
+                double number = double.Parse(displayTextBox.Text);
+                displayTextBox.Text = number.ToString("G");
+            }
+        }
+        private void opositeButtonClick(object sender, RoutedEventArgs e)
+        {
+            displayTextBox.Text = (-double.Parse(displayTextBox.Text)).ToString();
+            if (digitGrouping == true)
+            {
+                string stringDecimal = "";
+                if (pointActivated == true)
+                {
+                    stringDecimal = displayTextBox.Text.Substring(displayTextBox.Text.IndexOf(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
+                }
+                double numberOnDisplay = double.Parse(displayTextBox.Text);
+                int number = (int)numberOnDisplay;
+                string stringToDisplay = number.ToString("N", CultureInfo.CurrentCulture);
+                if (stringToDisplay.Contains(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator + "00"))
+                {
+                    stringToDisplay = stringToDisplay.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator + "00", "");
+                }
+                if (pointActivated == true)
+                {
+                    stringToDisplay += stringDecimal;
+                }
+                if (pointActivated == true && stringToDisplay[stringToDisplay.Length - 1] == '0')
+                {
+                    stringToDisplay = stringToDisplay.Substring(0, stringToDisplay.Length - 1);
+                }
+                displayTextBox.Text = stringToDisplay;
+            }
+            else
+            {
                 double number = double.Parse(displayTextBox.Text);
                 displayTextBox.Text = number.ToString("G");
             }

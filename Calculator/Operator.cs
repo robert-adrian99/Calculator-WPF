@@ -62,8 +62,6 @@ namespace Calculator
         {
             switch(operatorSymbol)
             {
-                case OperatorSymbol.Oposite:
-                    return -number;
                 case OperatorSymbol.Inverse:
                     if (number == 0)
                     {
