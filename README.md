@@ -2,7 +2,7 @@
 My version of Calculator made in C# using WPF.
 
 - This project is an implementation of the classic app Calculator in C# using WPF in Visual Studio.
-- I created this application as part of the Visual Programming Enviroments' laboratories at the university.
+- I created this application as part of the Visual Programming Environments' laboratories at the university.
 - It was a project I worked on my own.
 - The User Interface is pretty simple: it has a bunch of buttons which are organized using a hierarchy of stack panels; the window is not resizable and has a menu.
 - The functionality is the same as any calculator; the operations are done in cascade, even percentage.
